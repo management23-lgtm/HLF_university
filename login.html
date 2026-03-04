@@ -58,6 +58,22 @@ button{
     font-weight:bold;
 }
 
+/* PASSWORD TOGGLE */
+.password-container{
+    position: relative;
+}
+
+#togglePass{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-weight:bold;
+    color:white;
+    user-select:none;
+}
+
 @keyframes slideDown{
     from{opacity:0; transform:translateY(-10px);}
     to{opacity:1; transform:translateY(0);}
@@ -73,14 +89,19 @@ button{
 
 <h2>MIS Mobile Application</h2>
 
-<!-- BEAUTIFUL ERROR BOX -->
+<!-- ERROR BOX -->
 <div id="errorBox" class="error-box">
     ❌ <span>Invalid Student ID or Password</span>
     <div class="close-btn" onclick="closeError()">✖</div>
 </div>
 
 <input type="text" id="id" placeholder="Student ID">
-<input type="password" id="pass" placeholder="Password">
+
+<!-- Password with Eye Toggle -->
+<div class="password-container">
+    <input type="password" id="pass" placeholder="Password">
+    <span id="togglePass">👁️</span>
+</div>
 
 <button onclick="login()">Login</button>
 
@@ -107,6 +128,20 @@ function login(){
 function closeError(){
  document.getElementById("errorBox").style.display="none";
 }
+
+// PASSWORD TOGGLE
+const togglePass = document.getElementById("togglePass");
+const passInput = document.getElementById("pass");
+
+togglePass.addEventListener("click", () => {
+    if(passInput.type === "password"){
+        passInput.type = "text";
+        togglePass.textContent = "🙈"; // visible
+    } else {
+        passInput.type = "password";
+        togglePass.textContent = "👁️"; // hidden
+    }
+});
 </script>
 
 </body>
