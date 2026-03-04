@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Courses</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+ background:linear-gradient(135deg,#1e3c72,#2a5298);
+ color:white;
+ font-family:Segoe UI;
+ padding:40px;
+}
+
+h2{
+ text-align:center;
+}
+
+input{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ margin-top:15px;
+ margin-bottom:20px;
+}
+
+.card{
+ background:rgba(255,255,255,0.15);
+ padding:15px;
+ border-radius:18px;
+ margin-top:15px;
+}
+
+button{
+ width:100%;
+ padding:12px;
+ margin-top:10px;
+ border:none;
+ border-radius:18px;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+.primary{background:white;color:#1e3c72;}
+.secondary{background:rgba(255,255,255,0.2);color:white;}
+</style>
+</head>
+
+<body>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="Logo.png" style="width:100px; border-radius:50%; background:white; padding:6px;">
+</div>
+
+<h2>Search Networking Courses</h2>
+
+<!-- SEARCH BAR -->
+<input type="text" id="searchInput" placeholder="Search course by name or code..." onkeyup="searchCourse()">
+
+<div id="courseContainer"></div>
+
+<button class="secondary" onclick="window.location.href='dashboard.html'">Back</button>
+
+<script>
+
+// GET USER
+let user = JSON.parse(localStorage.getItem("currentUser"));
+if(!user){ window.location.href="login.html"; }
+
+// NETWORKING COURSES LIST
+const courses = [
+ {code:"NET101", name:"Introduction to Networking", credits:3},
+ {code:"NET102", name:"Network Fundamentals", credits:3},
+ {code:"NET201", name:"Routing and Switching", credits:3},
+ {code:"NET202", name:"Advanced Routing", credits:3},
+ {code:"NET203", name:"Wireless Networking", credits:3},
+ {code:"NET204", name:"Network Security", credits:3},
+ {code:"NET205", name:"Cloud Networking", credits:3},
+ {code:"NET206", name:"Cybersecurity Basics", credits:3},
+ {code:"NET301", name:"Enterprise Networking", credits:4},
+ {code:"NET302", name:"Network Troubleshooting", credits:3},
+ {code:"NET303", name:"Data Communication", credits:3},
+ {code:"NET304", name:"VoIP Technologies", credits:3},
+ {code:"NET305", name:"Internet Protocols", credits:3}
+];
+
+// DISPLAY COURSES
+function displayCourses(list){
+ let container=document.getElementById("courseContainer");
+ container.innerHTML="";
+
+ list.forEach(course=>{
+  container.innerHTML+=`
+  <div class="card">
+    <b>${course.code} - ${course.name}</b>
+    <p>${course.credits} Credits</p>
+    <button class="primary" onclick="enroll('${course.code}','${course.name}',${course.credits})">Enroll</button>
+  </div>
+  `;
+ });
+}
+
+// SEARCH FUNCTION
+function searchCourse(){
+ let input=document.getElementById("searchInput").value.toLowerCase();
+
+ let filtered=courses.filter(course =>
+  course.name.toLowerCase().includes(input) ||
+  course.code.toLowerCase().includes(input)
+ );
+
+ displayCourses(filtered);
+}
+
+// ENROLL FUNCTION
+function enroll(code,name,credits){
+
+ if(user.courses.find(c=>c.code===code)){
+   alert("Already enrolled!");
+   return;
+ }
+
+ if(user.credits+credits>21){
+   alert("Credit limit exceeded!");
+   return;
+ }
+
+ user.courses.push({code,name,credits});
+ user.credits+=credits;
+
+ localStorage.setItem("currentUser",JSON.stringify(user));
+
+ alert("Enrolled successfully!");
+}
+
+// LOAD ALL COURSES AT START
+displayCourses(courses);
+
+</script>
+
+</body>
+</html>

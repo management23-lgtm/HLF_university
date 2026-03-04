@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+    color:white;
+    font-family:Segoe UI;
+    padding:40px;
+}
+
+/* Inputs */
+input{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:none;
+    border-radius:14px;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:18px;
+    background:white;
+    color:#1e3c72;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ERROR BOX */
+.error-box{
+    display:none;
+    background:#ff4d4d;
+    color:white;
+    padding:15px;
+    border-radius:14px;
+    margin-bottom:15px;
+    animation:slideDown 0.4s ease;
+    position:relative;
+}
+
+.error-box span{
+    font-weight:bold;
+}
+
+.close-btn{
+    position:absolute;
+    right:15px;
+    top:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+@keyframes slideDown{
+    from{opacity:0; transform:translateY(-10px);}
+    to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="Logo.png" style="width:100px; border-radius:50%; background:white; padding:6px;">
+</div>
+
+<h2>MIS Mobile Application</h2>
+
+<!-- BEAUTIFUL ERROR BOX -->
+<div id="errorBox" class="error-box">
+    ❌ <span>Invalid Student ID or Password</span>
+    <div class="close-btn" onclick="closeError()">✖</div>
+</div>
+
+<input type="text" id="id" placeholder="Student ID">
+<input type="password" id="pass" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<script>
+const users = [
+ { id:"22537/2023", password:"Laurent", name:"Laurent", credits:0, courses:[] },
+ { id:"22539/2023", password:"Freddy", name:"Freddy", credits:0, courses:[] }
+];
+
+function login(){
+ let id=document.getElementById("id").value.trim();
+ let pass=document.getElementById("pass").value.trim();
+
+ let user=users.find(u=>u.id===id && u.password===pass);
+
+ if(user){
+     localStorage.setItem("currentUser",JSON.stringify(user));
+     window.location.href="dashboard.html";
+ }else{
+     document.getElementById("errorBox").style.display="block";
+ }
+}
+
+function closeError(){
+ document.getElementById("errorBox").style.display="none";
+}
+</script>
+
+</body>
+</html>
